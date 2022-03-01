@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Mood Diary dApp</title>
+    <!-- import ethers lib -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.5.4/ethers.umd.min.js"
+      integrity="sha512-xmbPx0riylir51GhTZCFd20yS7NYZNpfDTbEWBjDRzs+UaGb2RyjtASTVtF2ydQWp3xkso9j4sJj39PdSH8/EA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- Custom logic -->
+    <script></script>
+  </head>
+  <body>
+    <main>
+      <h1>Simple Mood Diary dApp</h1>
+      <div>
+        <label for="mood">Input mood:</label>
+        <input id="mood" type="text" />
+      </div>
+      <div style="margin-top: 1rem">
+        <button onclick="getMood()">getMood</button>
+        <button onclick="setMood()">setMood</button>
+      </div>
+    </main>
+  </body>
+  <script>
+    if (typeof window.ethereum == "undefined") {
+      alert("Install Metamask to interact with this website");
+    }
+
+    window.ethereum.enable();
+
+    const provider = new ethers.providers.Web3Provider(
+      window.ethereum,
+      "rinkeby"
+    );
+
+    const MoodContractAddress = "0x181564Ee3F45782632c25bEf10cAAab001aaD9f7";
+    const MoodContractAbi = [
+      {
+        constant: true,
+        inputs: [],
+        name: "getMood",
+        outputs: [
+          {
+            internalType: "string",
+            name: "",
+            type: "string",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: "string",
+            name: "_mood",
+            type: "string",
+          },
+        ],
+        name: "setMood",
+        outputs: [],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ];
+
+    let MoodContract;
+    provider.listAccounts().then((accounts) => {
+      console.log(accounts);
+      const signer = provider.getSigner(accounts[0]);
+      MoodContract = new ethers.Contract(
+        MoodContractAddress,
+        MoodContractAbi,
+        signer
+      );
+    });
+
+    const getMood = async () => {
+      const mood = await MoodContract.getMood();
+      alert("The current mood ist: " + mood);
+    };
+
+    const setMood = async () => {
+      const mood = document.querySelector("#mood").value;
+      if (mood === "") {
+        alert("Please input mood");
+      } else {
+        await MoodContract.setMood(mood);
+      }
+    };
+  </script>
+</html>
