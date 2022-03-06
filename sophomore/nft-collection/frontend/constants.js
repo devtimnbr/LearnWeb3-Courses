@@ -1,4 +1,4 @@
-export const NFT_CA = "0xB1aCe799Fc1653f1C3cd11CCd89f89AA18c1bD93";
+export const NFT_CA = "0x3b4523B2B03C3a070E69462E8ddc4B5A70B8c918";
 export const ABI = [
   {
     inputs: [

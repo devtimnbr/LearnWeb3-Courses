@@ -6,7 +6,7 @@ async function main() {
   const cryptoDevs = await CryptoDevs.deploy(
     "Crypto Devs",
     "CD",
-    "https://nft-collection-sneh1999.vercel.app/api/",
+    "https://learn-web3-tasks.vercel.app/api/",
     "0xFE98db5f28a6b14b16da8Af5C56a6aa6FcC0f48F"
   );
   await cryptoDevs.deployed();
